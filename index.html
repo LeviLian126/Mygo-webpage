@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN"> <!-- 默认语言设为中文 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyGO!!!!! Intro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="language-switcher">
+        <button onclick="switchLanguage('zh')" class="lang-btn active" data-lang="zh">中文</button>
+        <button onclick="switchLanguage('en')" class="lang-btn" data-lang="en">English</button>
+    </div>
+
+    <div class="hero-section">
+        <!-- 背景图片稍后在 style.css 中设置 -->
+        <div class="hero-content">
+            <h1>MyGO!!!!!</h1>
+            <div class="intro-text">
+                <!-- 为每个语言版本添加 data-lang 属性 -->
+                <p class="lang-zh" data-lang="zh">（在这里填写更新后的中文介绍）迷子でもいい、前へ進め。</p>
+                <p class="lang-en" data-lang="en" style="display: none;">(Fill in updated English introduction here) 迷子でもいい、前へ進め。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container members-section">
+        <!-- 成员介绍标题也需要根据语言切换 -->
+        <h2 data-lang-text='{"zh": "成员介绍", "en": "Members"}'>成员介绍</h2>
+        <div class="members-grid">
+            <!-- Rāna Kaname -->
+            <a href="rana.html" class="member-card">
+                <img src="images/rana.jpg" alt="Rāna Kaname">
+                <h3>Rāna Kaname</h3>
+                <p>Gt. / CV: Hina Aoki</p>
+            </a>
+            <!-- Anon Chihaya -->
+            <a href="anon.html" class="member-card">
+                <img src="images/anon.jpg" alt="Anon Chihaya">
+                <h3>Anon Chihaya</h3>
+                <p>Gt. / CV: Rin Tateishi</p>
+            </a>
+            <!-- Tomori Takamatsu -->
+            <a href="tomori.html" class="member-card">
+                <img src="images/tomorin.jpg" alt="Tomori Takamatsu">
+                <h3>Tomori Takamatsu</h3>
+                <p>Vo. / CV: Hina Yomiya</p>
+            </a>
+            <!-- Taki Shiina -->
+            <a href="taki.html" class="member-card">
+                <img src="images/taki.jpg" alt="Taki Shiina">
+                <h3>Taki Shiina</h3>
+                <p>Dr. / CV: Coco Hayashi</p>
+            </a>
+            <!-- Soyo Nagasaki -->
+            <a href="soyo.html" class="member-card">
+                <img src="images/soyo.jpg" alt="Soyo Nagasaki">
+                <h3>Soyo Nagasaki</h3>
+                <p>Ba. / CV: Mika Kohinata</p>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>本网站仅为粉丝娱乐性质，非官方、非商业用途。网站所使用的图片、文字等素材版权归原作者或官方所有，本人不持有任何版权。</p>
+        <p>This website is for fan entertainment purposes only. It is unofficial and non-commercial. All images, text, and other materials used on this site are copyrighted by their respective owners or the official sources. I do not hold any copyright.</p>
+    </footer>
+
+    <script>
+        function switchLanguage(lang) {
+            // 切换介绍文本的显示
+            const introTexts = document.querySelectorAll('.intro-text p');
+            introTexts.forEach(p => {
+                if (p.getAttribute('data-lang') === lang) {
+                    p.style.display = 'block';
+                } else {
+                    p.style.display = 'none';
+                }
+            });
+
+            // 切换标题文本
+            const translatableElements = document.querySelectorAll('[data-lang-text]');
+            translatableElements.forEach(el => {
+                const translations = JSON.parse(el.getAttribute('data-lang-text'));
+                if (translations[lang]) {
+                    el.textContent = translations[lang];
+                }
+            });
+
+            // 更新按钮的激活状态
+            const langButtons = document.querySelectorAll('.language-switcher .lang-btn');
+            langButtons.forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // 更新 html 标签的 lang 属性 (可选，但推荐)
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        // 页面加载时默认显示中文 (因为 HTML 中已设置)
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     switchLanguage('zh'); // 确保初始状态正确
+        // });
+    </script>
+
+</body>
+</html>
