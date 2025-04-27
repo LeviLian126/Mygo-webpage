@@ -16,14 +16,42 @@
     </div>
 
     <div class="hero-section">
-        <!-- 背景图片稍后在 style.css 中设置 -->
         <div class="hero-content">
             <h1>MyGO!!!!!</h1>
             <div class="intro-text">
-                <!-- 为每个语言版本添加 data-lang 属性 -->
-                <p class="lang-zh" data-lang="zh">（在这里填写更新后的中文介绍）迷子でもいい、前へ進め。</p>
-                <p class="lang-en" data-lang="en" style="display: none;">(Fill in updated English introduction here) 迷子でもいい、前へ進め。</p>
+                <!-- 中文介绍文本，拆分为 span -->
+                <p class="lang-zh" data-lang="zh">
+                    <span class="reveal-text">她们是五颗错轨的星，</span>
+                    <span class="reveal-text">带着未解的迷茫与灼热的渴望，</span>
+                    <span class="reveal-text">在黑暗中相撞。</span>
+                    <span class="reveal-text">那些摇摆不定的情感，</span>
+                    <span class="reveal-text">那些说不出口的彷徨，</span>
+                    <span class="reveal-text">她们没有放下，</span>
+                    <span class="reveal-text">而是化作肩头共同的重量。</span>
+                    <span class="reveal-text">舞台是她们约好的方向。</span>
+                    <span class="reveal-text">——纵使性格迥异，争吵不休，</span>
+                    <span class="reveal-text">那条无形的羁绊仍将她们紧紧相连。</span>
+                    <span class="reveal-text">迷子又如何？</span>
+                    <span class="reveal-text">她们用凌乱的脚步，踩出最坚定的回响。</span>
+                    <span class="reveal-text">"迷路的孩子，也要向着光奔跑。"</span>
+                </p>
+                <!-- 英文介绍文本，拆分为 span -->
+                <p class="lang-en" data-lang="en" style="display: none;">
+                    <span class="reveal-text">A band of five,</span>
+                    <span class="reveal-text">a collection of clashing personalities</span>
+                    <span class="reveal-text">and shared uncertainties.</span>
+                    <span class="reveal-text">Unsure of feelings,</span>
+                    <span class="reveal-text">burdened by unanswered anxieties—</span>
+                    <span class="reveal-text">they carry it all onto the stage.</span>
+                    <span class="reveal-text">Yet, united by the will to perform,</span>
+                    <span class="reveal-text">this team embraces being 'lost children' ( 迷子 ).</span>
+                    <span class="reveal-text">As their spirit proclaims:</span>
+                    <span class="reveal-text">'It's okay to be lost, just move forward.'</span>
+                    <span class="reveal-text">This is MyGO!!!!!</span>
+                </p>
             </div>
+            <!-- 日语 Slogan，始终显示 -->
+            <p class="slogan-ja">迷子でもいい、前へ進め。</p>
         </div>
     </div>
 
@@ -71,13 +99,15 @@
 
     <script>
         function switchLanguage(lang) {
-            // 切换介绍文本的显示
+            // 切换介绍文本的显示 (不再切换 Slogan)
             const introTexts = document.querySelectorAll('.intro-text p');
-            introTexts.forEach(p => {
-                if (p.getAttribute('data-lang') === lang) {
-                    p.style.display = 'block';
+            introTexts.forEach(el => {
+                if (el.getAttribute('data-lang') === lang) {
+                    el.style.display = 'block';
+                    // 触发动画 (如果需要切换时也触发)
+                    // triggerTextAnimation(el);
                 } else {
-                    p.style.display = 'none';
+                    el.style.display = 'none';
                 }
             });
 
@@ -108,6 +138,71 @@
         // document.addEventListener('DOMContentLoaded', () => {
         //     switchLanguage('zh'); // 确保初始状态正确
         // });
+
+        // 文字动画 Intersection Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null, // 视口
+                rootMargin: '0px',
+                threshold: 0.1 // 元素可见 10% 时触发
+            };
+
+            const triggerTextAnimation = (container) => {
+                const textSpans = container.querySelectorAll('.reveal-text');
+                // 先重置状态，确保切换语言时动画能重新触发
+                textSpans.forEach(span => {
+                    span.style.opacity = '0';
+                    span.classList.remove('animate-text');
+                });
+                // 延迟应用动画，确保重置生效
+                requestAnimationFrame(() => {
+                    textSpans.forEach((span, i) => {
+                        // 添加延迟，让文字逐个出现
+                        setTimeout(() => {
+                            span.style.opacity = '1'; // 先设为可见
+                            span.classList.add('animate-text');
+                        }, i * 100); // 每个 span 延迟 100ms
+                    });
+                });
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        triggerTextAnimation(entry.target);
+                        observer.unobserve(entry.target); // 触发后停止观察
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            // 观察 intro-text 容器
+            const introTextContainers = document.querySelectorAll('.intro-text p');
+            introTextContainers.forEach(container => {
+                 // 初始化隐藏 span (确保初始加载时不可见)
+                const spans = container.querySelectorAll('.reveal-text');
+                spans.forEach(span => span.style.opacity = '0');
+                observer.observe(container);
+            });
+
+            // 确保初始加载时，当前显示的语言段落动画能触发
+            const visibleIntro = document.querySelector('.intro-text p[style*="display: block"], .intro-text p:not([style*="display: none"])');
+            if (visibleIntro) {
+                // 如果初始状态下有可见段落，手动检查一次是否在视口内
+                // （如果一开始就在视口内，Intersection Observer 可能不会立即触发）
+                const bounding = visibleIntro.getBoundingClientRect();
+                if (
+                    bounding.top >= 0 &&
+                    bounding.left >= 0 &&
+                    bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+                ) {
+                    triggerTextAnimation(visibleIntro);
+                    observer.unobserve(visibleIntro); // 如果已在视口，也停止观察
+                }
+            }
+        });
     </script>
 
 </body>

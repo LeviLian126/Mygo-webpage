@@ -3,8 +3,8 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "Noto Sans JP", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background-color: #f5f5f7; /* 苹果常用的浅灰色背景 */
-    color: #1d1d1f; /* 苹果常用的深灰色文本 */
+    background-color: #f5f5f7; 
+    color: #1d1d1f; 
     line-height: 1.6;
 }
 
@@ -15,12 +15,12 @@ body, html {
 }
 
 h1, h2, h3 {
-    font-weight: 600; /* 稍粗的字体 */
+    font-weight: 600; 
     color: #000;
 }
 
 a {
-    color: #007aff; /* 苹果蓝 */
+    color: #007aff; 
     text-decoration: none;
 }
 
@@ -28,9 +28,8 @@ a:hover {
     text-decoration: underline;
 }
 
-/* 语言切换器样式 */
 .language-switcher {
-    position: absolute; /* 或者 fixed，根据需要调整 */
+    position: absolute;
     top: 15px;
     right: 20px;
     z-index: 10; /* 确保在最上层 */
@@ -104,6 +103,9 @@ a:hover {
     margin-bottom: 15px;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* 文字阴影 */
+    max-width: 600px; /* 限制最大宽度 */
+    margin-left: auto; /* 居中 */
+    margin-right: auto; /* 居中 */
 }
 
 .intro-text p {
@@ -114,9 +116,44 @@ a:hover {
 }
 
 /* 语言特定字体 (可选，如果需要更精确控制) */
+
+.slogan-ja {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 1.2rem; /* 稍微增大字体 */
+    font-weight: 500; /* 中等粗细 */
+    margin-top: 1000px; /* 增加上边距 */
+    text-align: center; /* 居中显示 */
+    color: #fff; /* 保持白色 */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7), -1px -1px 4px rgba(0, 0, 0, 0.7); /* 增强文字阴影 */
+}
 .lang-zh { font-family: "Noto Sans SC", sans-serif; }
 .lang-ja { font-family: "Noto Sans JP", sans-serif; }
 .lang-en { font-family: Roboto, sans-serif; }
+
+
+/* 文字动画样式 */
+.reveal-text {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    display: inline-block; /* 或者 block，取决于布局需要 */
+    margin-bottom: 0.5em; /* 为每行增加一点间距 */
+}
+
+.animate-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 日语 Slogan 样式 */
+.slogan-ja {
+    font-size: 1.5rem; /* 调整字体大小 */
+    font-weight: 500;
+    margin-top: 20px; /* 与上方内容保持间距 */
+    color: #fff; /* 白色字体 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字阴影 */
+    /* 默认隐藏，由 JS 控制显示 */
+}
 
 
 /* 成员介绍区域 */
@@ -198,6 +235,7 @@ footer {
         font-size: 2.5rem;
     }
     .members-grid {
+        grid-template-columns: 1fr; /* 在小屏幕上强制单列布局 */
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 20px;
     }
