@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Noto+Sans+SC:wght@400&family=Noto+Sans+JP:wght@500&family=Roboto:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="language-switcher">
@@ -17,7 +17,17 @@
 
     <div class="hero-section">
         <div class="hero-content">
-            <h1>MyGO!!!!!</h1>
+            <h1 class="dancing-script">
+                <span class="title-char">M</span>
+                <span class="title-char">y</span>
+                <span class="title-char">G</span>
+                <span class="title-char">O</span>
+                <span class="title-char">!</span>
+                <span class="title-char">!</span>
+                <span class="title-char">!</span>
+                <span class="title-char">!</span>
+                <span class="title-char">!</span>
+            </h1>
             <div class="intro-text">
                 <!-- 中文介绍文本，拆分为 span -->
                 <p class="lang-zh" data-lang="zh">
@@ -35,7 +45,7 @@
                     <span class="reveal-text">她们用凌乱的脚步，踩出最坚定的回响。</span>
                     <span class="reveal-text">"迷路的孩子，也要向着光奔跑。"</span>
                 </p>
-                <!-- 英文介绍文本，拆分为 span -->
+                <!-- 英文介绍文本 -->
                 <p class="lang-en" data-lang="en" style="display: none;">
                     <span class="reveal-text">A band of five,</span>
                     <span class="reveal-text">a collection of clashing personalities</span>
@@ -56,39 +66,48 @@
     </div>
 
     <div class="container members-section">
-        <!-- 成员介绍标题也需要根据语言切换 -->
         <h2 data-lang-text='{"zh": "成员介绍", "en": "Members"}'>成员介绍</h2>
         <div class="members-grid">
             <!-- Rāna Kaname -->
             <a href="pages/rana.html" class="member-card">
                 <img src="images/rana.jpg" alt="Rāna Kaname">
-                <h3>Rāna Kaname</h3>
-                <p>Gt. / CV: Hina Aoki</p>
+                <h3>要 楽奈</h3>
+                <p>Gt. / CV: 青木 陽菜</p>
             </a>
             <!-- Anon Chihaya -->
             <a href="pages/anon.html" class="member-card">
                 <img src="images/anon.jpg" alt="Anon Chihaya">
-                <h3>Anon Chihaya</h3>
-                <p>Gt. / CV: Rin Tateishi</p>
+                <h3>千早 愛音</h3>
+                <p>Gt. / CV: 立石 凛</p>
             </a>
             <!-- Tomori Takamatsu -->
             <a href="pages/tomori.html" class="member-card">
                 <img src="images/tomorin.jpg" alt="Tomori Takamatsu">
-                <h3>Tomori Takamatsu</h3>
-                <p>Vo. / CV: Hina Yomiya</p>
+                <h3>高松 灯</h3>
+                <p>Vo. / CV: 羊宮 妃那</p>
             </a>
             <!-- Taki Shiina -->
             <a href="pages/taki.html" class="member-card">
                 <img src="images/taki.jpg" alt="Taki Shiina">
-                <h3>Taki Shiina</h3>
-                <p>Dr. / CV: Coco Hayashi</p>
+                <h3>椎名 立希</h3>
+                <p>Dr. / CV: 林 鼓子</p>
             </a>
             <!-- Soyo Nagasaki -->
             <a href="pages/soyo.html" class="member-card">
                 <img src="images/soyo.jpg" alt="Soyo Nagasaki">
-                <h3>Soyo Nagasaki</h3>
-                <p>Ba. / CV: Mika Kohinata</p>
+                <h3>長崎 そよ</h3>
+                <p>Ba. / CV: 小日向 美香</p>
             </a>
+        </div>
+    </div>
+
+    <!-- 视频播放器区域 -->
+    <div class="container video-section">
+        <h2 data-lang-text='{"zh": "MUSIC", "en": "MUSIC"}'>MUSIC</h2>
+        <div class="video-wrapper">
+            <div class="video-placeholder" id="videoPlaceholder">
+                <button class="play-button" onclick="playVideo()">▶ Play Video</button>
+            </div>
         </div>
     </div>
 
@@ -98,5 +117,19 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        function playVideo() {
+            const placeholder = document.getElementById('videoPlaceholder');
+            const iframe = document.createElement('iframe');
+            iframe.src = "https://player.bilibili.com/player.html?bvid=BV1Gm41127gL&page=1";
+            iframe.className = "bilibili-player";
+            iframe.scrolling = "no";
+            iframe.border = "0";
+            iframe.frameBorder = "no";
+            iframe.framespacing = "0";
+            iframe.allowFullscreen = true;
+            placeholder.replaceWith(iframe);
+        }
+    </script>
 </body>
 </html>

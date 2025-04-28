@@ -67,9 +67,10 @@ function switchLanguage(lang) {
     // 更新 html 标签的 lang 属性
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
 
-    // 手动触发可见容器的动画（仅针对介绍文本）
+    // 手动触发可见容器的动画（包括标题和介绍文本）
     if (visibleContainer) {
         triggerTextAnimation(visibleContainer);
+        triggerTitleAnimation();
     }
 }
 
@@ -92,6 +93,31 @@ function triggerTextAnimation(container) {
     });
 }
 
+// 标题动画触发函数
+function triggerTitleAnimation() {
+    const titleChars = document.querySelectorAll('.dancing-script .title-char');
+    // 重置标题字符状态
+    titleChars.forEach(char => {
+        char.style.opacity = '0';
+        char.classList.remove('animate-text');
+    });
+    // 应用动画，第一个字符 'M' 更慢
+    requestAnimationFrame(() => {
+        titleChars.forEach((char, i) => {
+            const delay = i === 0 ? 500 : 500 + (i * 100); // 'M' 延迟 300ms，后续字符从 300ms 开始每 100ms 一个
+            setTimeout(() => {
+                char.style.opacity = '1';
+                char.classList.add('animate-text');
+                if (i === 0) {
+                    char.style.transition = 'opacity 1s ease-out, transform 1s ease-out'; // 'M' 动画持续 1s
+                } else {
+                    char.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'; // 其他字符保持 0.6s
+                }
+            }, delay);
+        });
+    });
+}
+
 // 页面加载时的动画设置
 document.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
@@ -103,15 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const observerCallback = (entries, observer) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                // Check if the intersecting element is one of the intro text paragraphs
+                // 触发介绍文本和标题动画
                 if (entry.target.matches('.intro-text p')) {
                     triggerTextAnimation(entry.target);
-                    animateSlogan(); // Also trigger slogan animation when intro text becomes visible
+                    triggerTitleAnimation();
+                    animateSlogan();
                 }
             }
         });
     };
-
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
@@ -124,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 初始加载时检查默认可见的段落并触发动画
-    // Find the initially visible paragraph (either explicitly set to block or not set to none)
     const visibleIntro = document.querySelector('.intro-text p[style*="display: block"], .intro-text p:not([style*="display: none"])');
     if (visibleIntro) {
         // Check if it's actually in the viewport on load
@@ -136,7 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
         ) {
             triggerTextAnimation(visibleIntro);
-            animateSlogan(); // Trigger slogan animation on initial load if text is visible
+            triggerTitleAnimation();
+            animateSlogan();
         }
     }
 
